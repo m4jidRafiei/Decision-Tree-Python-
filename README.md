@@ -24,6 +24,8 @@ You can find all the requirements in "requirements.txt" file, and it can be inst
 
 * pip install -r requirements.txt 
 
+Also to be able to see visual tree, you need to install graphviz package. [Here](https://www.graphviz.org/download/) you can find the right package with respect to your operation system. 
+
 
 ## Usage
 --------------------
