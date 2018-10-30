@@ -1,4 +1,4 @@
-# Make Visual Decision Tree Based on Categorical Attributes 
+# Visual Decision Tree Based on Categorical Attributes 
 -------------------
 
 As you may know "scikit-learn" library in python is not able to make a decision tree based on categorical data, and you have to convert categorical data to numerical before passing them to the classifier method. Also, the resulted decision tree is a binary tree while a decision tree does not need to be binary.
