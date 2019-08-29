@@ -32,7 +32,7 @@ Also to be able to see visual tree, you need to install graphviz package. [Here]
 
 ```python
 
-from DecisionTree import DecisionTree
+from p_decision_tree.DecisionTree import DecisionTree
 import pandas as pd
 
 #Reading CSV file as data set by Pandas
@@ -58,7 +58,7 @@ decisionTree = DecisionTree(data_descriptive.tolist(), descriptive_features.toli
 decisionTree.id3(0,0)
 
 #Visualizing decision tree by Graphviz
-dot = decisionTree.print_visualTree( render=False )
+dot = decisionTree.print_visualTree( render=True )
 
 # When using Jupyter
 #display( dot )
