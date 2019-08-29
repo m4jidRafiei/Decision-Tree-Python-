@@ -3,7 +3,7 @@
 
 As you may know "scikit-learn" library in python is not able to make a decision tree based on categorical data, and you have to convert categorical data to numerical before passing them to the classifier method. Also, the resulted decision tree is a binary tree while a decision tree does not need to be binary.
 
-Here we provide a library which is able to make a visual decision tree based on categorical data. You can read more about decision trees [here](https://en.wikipedia.org/wiki/Decision_tree).
+Here, we provide a library which is able to make a visual decision tree based on categorical data. You can read more about decision trees [here](https://en.wikipedia.org/wiki/Decision_tree).
 
 ## Features
 --------------------
@@ -44,10 +44,10 @@ descriptive_features = columns[:-1]
 #The last column is considered as label
 label = columns[-1]
 
-#Converting all the columns to string 
+#Converting all the columns to string
 for column in columns:
     data[column]= data[column].astype(str)
-   
+
 data_descriptive = data[descriptive_features].values
 data_label = data[label].values
 
@@ -58,10 +58,14 @@ decisionTree = DecisionTree(data_descriptive.tolist(), descriptive_features.toli
 decisionTree.id3(0,0)
 
 #Visualizing decision tree by Graphviz
-decisionTree.print_visualTree()
+dot = decisionTree.print_visualTree( render=False )
+
+# When using Jupyter
+#display( dot )
 
 print("System entropy: ", format(decisionTree.entropy))
 print("System gini: ", format(decisionTree.gini))
+
 
 
 ``` 

@@ -1,4 +1,8 @@
-from DecisionTree import DecisionTree
+''''
+@author: majid
+'''
+
+from p_decision_tree.DecisionTree import DecisionTree
 import pandas as pd
 
 #Reading CSV file as data set by Pandas
@@ -10,10 +14,10 @@ descriptive_features = columns[:-1]
 #The last column is considered as label
 label = columns[-1]
 
-#Converting all the columns to string 
+#Converting all the columns to string
 for column in columns:
     data[column]= data[column].astype(str)
-   
+
 data_descriptive = data[descriptive_features].values
 data_label = data[label].values
 
@@ -24,9 +28,12 @@ decisionTree = DecisionTree(data_descriptive.tolist(), descriptive_features.toli
 decisionTree.id3(0,0)
 
 #Visualizing decision tree by Graphviz
-decisionTree.print_visualTree()
+dot = decisionTree.print_visualTree( render=True )
+
+# When using Jupyter
+#display( dot )
 
 print("System entropy: ", format(decisionTree.entropy))
 print("System gini: ", format(decisionTree.gini))
 
-   
+

@@ -1,3 +1,10 @@
+# Original code from: https://github.com/m4jidRafiei/Decision-Tree-Python-
+#
+# Modified by a student to return the Digraph object instead of rendering it automatically.
+# Modified to avoid error of mis-identification of graphviz nodes. Although I used a random
+# generation and probabilistic cosmic rays might introduce equal IDs nevertheless.
+
+from random import random
 import math
 from collections import deque
 from graphviz import Digraph
@@ -7,6 +14,7 @@ class Node(object):
         self.value = None
         self.next = None
         self.childs = None
+        self.name = ""
 
 # Simple class of Decision Tree
 # Aimed for who want to learn Decision Tree, so it is not optimized
@@ -62,7 +70,7 @@ class DecisionTree(object):
             else:
                 entropy += 0
         return entropy
-    
+
     def getGini(self, sampleIds):
         gini = 0
         labelCount = [0] * len(self.labelCodes)
@@ -102,7 +110,7 @@ class DecisionTree(object):
             # print("-gig", vids)
             gain -= (vc/len(sampleIds)) * self.getEntropy(vids)
         return gain
-    
+
     def getInformationGainGini(self, sampleIds, attributeId):
         gain = self.getGini(sampleIds)
         attributeVals = []
@@ -133,7 +141,7 @@ class DecisionTree(object):
         except:
             maxvalue = 0
         return self.attributes[maxId], maxId, maxvalue
-    
+
     def getAttributeMaxInformationGainGini(self, sampleIds, attributeIds):
         attributesEntropy = [0] * len(attributeIds)
         for i, attId in zip(range(len(attributeIds)), attributeIds):
@@ -176,20 +184,20 @@ class DecisionTree(object):
         # print(bestAttrName)
         #if(bestValue > 0):
             #print("Best gain -> " + bestAttrName + "::" + str(bestValue) + "\n" )
-        
+
         root.value = bestAttrName
         root.childs = []  # Create list of children
-        
+
         if(bestValue < gain_threshold):
             Dominantlabel = self.getDominantLabel(sampleIds)
             root.value = Dominantlabel
             return root
-        
+
         if(len(sampleIds) < minimum_samples):
             Dominantlabel = self.getDominantLabel(sampleIds)
             root.value = Dominantlabel
             return root
-        
+
         for value in self.getAttributeValues(sampleIds, bestAttrId):
                 # print(value)
                 child = Node()
@@ -207,45 +215,46 @@ class DecisionTree(object):
                     if len(attributeIds) > 0 and bestAttrId in attributeIds:
                         toRemove = attributeIds.index(bestAttrId)
                         attributeIds.pop(toRemove)
-         
-                    child.next = self.id3Recv(childSampleIds, attributeIds, child.next, gain_threshold, minimum_samples)
+
+                    child.next = self.id3Recv(childSampleIds, attributeIds.copy(), child.next, gain_threshold, minimum_samples)
         return root
 
-    def print_visualTree(self):
+    def print_visualTree(self, render=True):
         dot = Digraph(comment='Decision Tree')
         if self.root:
+            self.root.name = "root"
             roots = deque()
             roots.append(self.root)
             counter = 0
             while len(roots) > 0:
                 root = roots.popleft()
 #                 print(root.value)
-                dot.node(root.value, root.value)
+                dot.node(root.name, root.value)
                 if root.childs:
                     for child in root.childs:
                         counter += 1
 #                         print('({})'.format(child.value))
-                        dot.node(child.value, child.value)
-                        dot.edge(root.value,child.value)
+                        child.name = str(random())
+                        dot.node(child.name, child.value)
+                        dot.edge(root.name,child.name)
                         if(child.next.childs):
-                            dot.node(child.next.value, child.next.value)
-                            dot.edge(child.value,child.next.value)
+                            child.next.name = str(random())
+                            dot.node(child.next.name, child.next.value)
+                            dot.edge(child.name,child.next.name)
                             roots.append(child.next)
                         else:
-                            nodeName = ""
-                            try: 
-                                nodeName = child.next.value+str(counter)
-                            except:
-                                nodeName = ""+str(counter)
-                            dot.node(nodeName, child.next.value)
-                            dot.edge(child.value,nodeName)
-                        
+                            child.next.name = str(random())
+                            dot.node(child.next.name, child.next.value)
+                            dot.edge(child.name,child.next.name)
+
                 elif root.next:
                     dot.node(root.next, root.next)
                     dot.edge(root.value,root.next)
 #                     print(root.next)
-#         print(dot.source) 
-        try:
-            dot.render('output/visualTree.gv', view=True)   
-        except:
-            print("Please close the resulted pdf file")
+#         print(dot.source)
+        if render :
+            try:
+                dot.render('output/visualTree.gv', view=True)
+            except:
+                print("You either have not installed the 'dot' to visualize the decision tree or the reulted .pdf file is open!")
+        return dot
