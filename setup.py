@@ -2,18 +2,17 @@ import setuptools
 
 import p_decision_tree
 
-def read_file(filename):
-    with open(join(dirname(__file__), filename)) as f:
-        return f.read()
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
 
 setuptools.setup(
-    name=p_decision_tree.__name__,
-    version=p_decision_tree.__version__,
+    name='p_decision_tree',
+    version='0.0.3',
     author=p_decision_tree.__author__,
-    author_email=p_decision_tree.__author_email__,
+    author_email='majid.rafiei@pads.rwth-aachen.de',
     description="Visual Decision Tree Based on Categorical Attributes Package",
-    long_description=read_file('README.md'),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/m4jidRafiei/Decision-Tree-Python-",
     packages=setuptools.find_packages(),
@@ -23,8 +22,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'graphviz==0.9',
-        'pandas==0.24.2'
+        'graphviz',
+        'pandas'
     ],
     project_urls={
         'Source': 'https://github.com/m4jidRafiei/Decision-Tree-Python-'
