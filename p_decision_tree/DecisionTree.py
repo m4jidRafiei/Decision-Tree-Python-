@@ -219,7 +219,7 @@ class DecisionTree(object):
                     child.next = self.id3Recv(childSampleIds, attributeIds.copy(), child.next, gain_threshold, minimum_samples)
         return root
 
-    def print_visualTree(self, render=True):
+    def print_visualTree(self, file_name='visualTree.gv', render=True):
         dot = Digraph(comment='Decision Tree')
         if self.root:
             self.root.name = "root"
@@ -254,7 +254,8 @@ class DecisionTree(object):
 #         print(dot.source)
         if render :
             try:
-                dot.render('output/visualTree.gv', view=True)
+                output_name = 'output/'+file_name
+                dot.render(output_name, view=True)
             except:
                 print("You either have not installed the 'dot' to visualize the decision tree or the reulted .pdf file is open!")
         return dot
